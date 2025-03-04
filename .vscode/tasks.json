@@ -1,0 +1,34 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "cargo",
+			"command": "build",
+			"problemMatcher": [
+				"$rustc"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"label": "rust: cargo build"
+		},
+		{
+			"type": "cargo",
+			"command": "build",
+			"args": [
+				"--manifest-path", "${fileDirname}/../Cargo.toml",
+				"--all-targets",
+				"--color", "always"
+			],
+			"problemMatcher": [
+				"$rustc"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"label": "rust: wr cargo build"
+		}
+	]
+}
