@@ -13,6 +13,42 @@
 // You don't have to though: it's perfectly okay to write three separate
 // implementations manually. Venture further only if you're curious.
 
+// it has a generic parameter, `Exponent``, which defaults to Self
+// it has an associated type, `Output`, the type of the result of the operation
+pub trait Power<Exponent = Self> {
+    type Output;
+
+    fn power(self, exponent: Exponent) -> Self::Output;
+}
+
+// Implement the `Power` trait for `u32` when the exponent is `u16`
+impl Power<u16> for u32 {
+    type Output = u32;
+
+    fn power(self, exponent: u16) -> Self::Output {
+        self.pow(exponent.into())
+    }
+}
+
+// Implement the `Power` trait for `u32` when the exponent is `u32`
+impl Power<u32> for u32 {
+    type Output = u32;
+
+    fn power(self, exponent: u32) -> Self::Output {
+        self.pow(exponent.into())
+    }
+}
+
+// Implement the `Power` trait for `u32` when the exponent is `&u32`
+impl Power<&u32> for u32 {
+    type Output = u32;
+
+    fn power(self, exponent: &u32) -> Self::Output {
+        self.pow(*exponent)
+    }
+}
+
+
 #[cfg(test)]
 mod tests {
     use super::Power;

@@ -14,4 +14,6 @@ fn test_saturating_u16() {
     assert_eq!(a + a, 20u16);
     assert_eq!(a + 5u16, 15u16);
     assert_eq!(a + e, SaturatingU16::from(u16::MAX));
+    // Additional test added by Nafraf
+    assert_eq!(a , 10u8);
 }
