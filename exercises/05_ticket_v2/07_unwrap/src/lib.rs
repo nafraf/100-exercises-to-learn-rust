@@ -1,8 +1,33 @@
+use core::error;
+use std::os::macos::raw::stat;
+
 // TODO: `easy_ticket` should panic when the title is invalid.
 //   When the description is invalid, instead, it should use a default description:
 //   "Description not provided".
 fn easy_ticket(title: String, description: String, status: Status) -> Ticket {
-    todo!()
+    // let title2 = title.clone();
+    // let status2 = status.clone();
+    // match Ticket::new(title2, description, status) {
+    //     Ok(ticket) => ticket,
+    //     Err(error) => match error.as_str() {
+    //         "Title cannot be empty" => panic!("Title cannot be empty"),
+    //         "Title cannot be longer than 50 bytes" => panic!("Title cannot be longer than 50 bytes"),
+    //         "Description cannot be empty" => Ticket::new(title, "Description not provided".to_string(), status2).unwrap(),
+    //         "Description cannot be longer than 500 bytes" => Ticket::new(title, "Description not provided".to_string(), status2).unwrap(),
+    //         _ => panic!("Unknown error"),
+    //     }
+    // }
+
+    match Ticket::new(title.clone(), description, status.clone()) {
+        Ok(ticket) => ticket,
+        Err(error) => {
+            if error.contains("Description") {
+                Ticket::new(title, "Description not provided".to_string(), status).unwrap()
+            } else {
+                panic!("{error}");
+            }
+        }
+    }
 }
 
 #[derive(Debug, PartialEq, Clone)]

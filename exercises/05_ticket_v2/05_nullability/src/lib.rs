@@ -36,7 +36,23 @@ impl Ticket {
         }
     }
     pub fn assigned_to(&self) -> Option<&String> {
-        todo!()
+        match &self.status {
+            Status::InProgress { assigned_to } => Some(assigned_to),
+            _ => None,
+        }
+
+        // The pattern Status::InProgress { assigned_to } uses destructuring to
+        // extract this information. The curly braces indicate we're accessing a
+        // named field within the enum variant, pulling out the person's name or
+        // identifier stored in the `assigned_to`` field.
+
+        // The right side of the arrow (=>) determines what this pattern match
+        // should evaluate to.
+
+        // By wrapping the extracted value in Some(assigned_to), the code is
+        // using Rust's Option type to indicate that we've successfully found
+        // assignment information.
+
     }
 }
 
