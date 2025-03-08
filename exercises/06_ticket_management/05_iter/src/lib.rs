@@ -10,6 +10,32 @@ pub struct TicketStore {
     tickets: Vec<Ticket>,
 }
 
+impl TicketStore {
+    pub fn iter(&self) -> impl Iterator<Item = &Ticket> {
+        // iter(&self) takes a shared reference to self (&self), indicating that
+        // it doesn't modify the TicketStore instance or take ownership of it.
+        // Instead, it simply provides read-only access to the collection's elements.
+        // This is a crucial design choice that allows clients to examine
+        // tickets multiple times without invalidating the collection.
+
+        // The return type `impl Iterator<Item = &Ticket>`` employs Rust's
+        // "impl Trait" syntax, which offers two key benefits. First, it hides
+        // the concrete iterator type (likely std::slice::Iter<'_, Ticket>),
+        // creating a cleaner API by focusing on the iterator's behavior
+        // rather than its specific implementation.
+        // Second, it clearly communicates that the iterator yields shared
+        // references to Ticket objects (&Ticket), not owned instances.
+
+        // The method body simply delegates to self.tickets.iter().
+        // This suggests that TicketStore internally uses a collection
+        // (likely a Vec<Ticket>) to store its data, and the implementation
+        // leverages the underlying collection's iterator capabilities.
+        // This composition-based approach follows Rust's principle of building
+        // complex behaviors from simple components.
+        self.tickets.iter()
+    }
+}
+
 #[derive(Debug, Clone, PartialEq)]
 pub struct Ticket {
     title: TicketTitle,

@@ -13,6 +13,28 @@ pub struct TicketStore {
     tickets: Vec<Ticket>,
 }
 
+// See https://doc.rust-lang.org/std/vec/struct.IntoIter.html
+impl IntoIterator for TicketStore {
+    //  declares that the iterator will yield Ticket objects
+    type Item = Ticket;
+    // specifies that the actual iterator type being returned is a vector
+    // iterator specialized for Ticket elements. This suggests that TicketStore
+    // internally uses a Vec<Ticket> to store its data.
+    type IntoIter = std::vec::IntoIter<Self::Item>;
+
+
+    // The into_iter method implementation delegates to the into_iter method of
+    // the internal tickets field.
+    // This pattern of delegation is common in Rust when implementing traits for
+    // wrapper types. By calling self.tickets.into_iter(), ownership of the internal
+    // vector is transferred to the caller, allowing them to iterate through all
+    // tickets without additional overhead.
+    fn into_iter(self) -> Self::IntoIter {
+        self.tickets.into_iter()
+    }
+}
+
+
 #[derive(Clone, Debug, PartialEq)]
 pub struct Ticket {
     pub title: TicketTitle,

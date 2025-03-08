@@ -8,6 +8,39 @@ pub struct TicketStore {
     counter: u64,
 }
 
+// // Slightly simplified
+// pub trait Index<Idx>
+// {
+//     type Output;
+
+//     // Required method
+//     fn index(&self, index: Idx) -> &Self::Output;
+// }
+
+impl std::ops::Index<TicketId> for TicketStore {
+    type Output = Ticket;
+
+    fn index(&self, id: TicketId) -> &Self::Output {
+        self.get(id).expect("Ticket not found")
+    }
+}
+
+// impl std::ops::Index<&TicketId> for TicketStore {
+//     type Output = Ticket;
+
+//     fn index(&self, id: &TicketId) -> &Self::Output {
+//         self.get(*id).expect("Ticket not found")
+//     }
+// }
+
+impl std::ops::Index<&TicketId> for TicketStore {
+    type Output = Ticket;
+
+    fn index(&self, id: &TicketId) -> &Self::Output {
+        &self[*id]
+    }
+}
+
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct TicketId(u64);
 

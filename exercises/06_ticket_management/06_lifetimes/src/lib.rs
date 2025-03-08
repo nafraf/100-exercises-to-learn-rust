@@ -6,6 +6,33 @@ pub struct TicketStore {
     tickets: Vec<Ticket>,
 }
 
+
+// The `impl<'a> IntoIterator for &'a TicketStore` declaration introduces a
+// lifetime parameter 'a that connects the lifetime of the TicketStore reference
+// to the lifetimes of the references yielded by the iterator.
+// This ensures that the borrowed tickets cannot outlive the collection that
+// contains them, preventing potential memory safety issues.
+impl<'a>  IntoIterator for &'a TicketStore {
+    // The `type Item = &'a Ticket` associated type declaration specifies that
+    // the iterator will produce references to Ticket objects rather than owned
+    // values. This allows for efficient, non-destructive iteration where the
+    // original collection remains intact and available for future use.
+    type Item = &'a Ticket;
+
+    // The `type IntoIter = std::slice::Iter<'a, Ticket>` line reveals that the
+    // implementation leverages Rust's built-in slice iterator, suggesting that
+    // TicketStore internally stores tickets in a contiguous collection like a
+    // vector or array. This is an efficient choice as slice iterators are
+    // optimized for traversing elements stored in memory.
+    type IntoIter = std::slice::Iter<'a, Ticket>;
+
+    // the `into_iter`` method implementation simply delegates to the internal
+    // collection's iter() method.
+    fn into_iter(self) -> Self::IntoIter {
+        self.tickets.iter()
+    }
+}
+
 #[derive(Clone, Debug, PartialEq)]
 pub struct Ticket {
     pub title: TicketTitle,
